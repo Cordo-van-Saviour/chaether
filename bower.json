@@ -1,12 +1,12 @@
 {
-  "name": "blea",
+  "name": "chaether",
   "description": "",
   "main": "",
   "authors": [
     "Uros Radovanovic <radovanovic.uros92@gmail.com>"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/Cordo-van-Saviour/blea",
+  "homepage": "https://github.com/Cordo-van-Saviour/chaether",
   "private": true,
   "dependencies": {
     "angular-animate": "^1.5.8",
