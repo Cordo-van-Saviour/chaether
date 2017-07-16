@@ -2,14 +2,14 @@
 
 /**
  * @ngdoc overview
- * @name bleaApp
+ * @name chaetherApp
  * @description
- * # bleaApp
+ * # chaetherApp
  *
  * Main module of the application.
  */
 angular
-  .module('bleaApp', [
+  .module('chaetherApp', [
     'ngAnimate',
     'ngCookies',
     'ngResource',

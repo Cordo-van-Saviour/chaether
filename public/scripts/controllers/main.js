@@ -2,12 +2,12 @@
 
 /**
  * @ngdoc function
- * @name bleaApp.controller:MainCtrl
+ * @name chaetherApp.controller:MainCtrl
  * @description
  * # MainCtrl
- * Controller of the bleaApp
+ * Controller of the chaetherApp
  */
-angular.module('bleaApp')
+angular.module('chaetherApp')
   .controller('MainCtrl', ['$rootScope', '$scope', '$q', 'emailService', function ($rootScope, $scope, $q, emailService) {
 
     $scope.connected = true;
@@ -29,8 +29,9 @@ angular.module('bleaApp')
           if(valuereturned<1000000000000000) {
             $scope.insufficientFunds = true;
           }
-        })
-    		$scope.messages = [];
+        });
+
+        $scope.messages = [];
         $scope.eventData = [];
     		// watch for changes
     		events.watch(function(error, event) {

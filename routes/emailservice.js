@@ -2,11 +2,8 @@ var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
 var Web3 = require('web3');
-var nodemailer = require('nodemailer');
-var sqlstatements = require('../modules/sqlstatements');
 
 require('ssl-root-cas').inject();
-sqlstatements.test(4)
 
 /*
 *-------------------------------------------*
@@ -42,72 +39,3 @@ console.log("syncing: ", web3.eth.syncing, ", Latest Block: ",web3.eth.blockNumb
 console.log("Accounts[0]: " , web3.eth.accounts[0], ":",web3.eth.getBalance(web3.eth.accounts[0]).toNumber())
 console.log(new Date());
 console.log("listening for events on ", contractAddress);
-
-
-router.post('/outgoingemail', function(req, res, next) {
-
-});
-
-
-
-/*
-*-------------------------------------------*
-*---------- Watching and sending -----------*
-*-------------------------------------------*
-Now we watch emits of events we had set. When
-a new event is emmited from Ethereum, we exec
-a function that sends parsed data as an email
-to an SMTP server using defined transport obj
-*/
-events.watch(function(error, event) {
-
-  if (!error) {
-    var smtpConfig = {
-      host: 'smtp.klotfrket.co',
-      port: 465,
-      secure: true, // use SSL
-      auth: {
-        user: 'uros.radovanovic@klotfrket.co',
-        pass: '123456'
-      }
-    };
-
-
-    var transporter = nodemailer.createTransport(smtpConfig);
-
-    transporter.verify(function(error, success) {
-      if (error) {
-        console.log("Something went wrong, but it's going to be ok. " + error);
-      } else {
-        console.log('Server is ready to take our messages');
-      }
-    });
-
-
-    var mailOptions = {
-      from: event.args.Sender + '@testmail.co', // sender address
-      to: 'uros.radovanovic@klotfrket.co', // list of receivers. TODO: ATM hardcoded, should be: event.args.EmailAddress
-      subject: event.args.Subject, // Subject line
-      text: event.args.Message, // plaintext body
-      // html: '<b>Hello world ?</b>' // html body
-    };
-
-    /*
-    *---------------------------------*
-    *---------- sendMail() -----------*
-    *---------------------------------*
-    |- Send mail with defined transport
-    object to an SMTP server. --------|
-    */
-
-    // transporter.sendMail(mailOptions, function(error, info){
-    //   if(error){
-    //     return console.log(error);
-    //   }
-    //   console.log('Message sent: ' + info.response);
-    // });
-  }
-  else {
-    console.log("error!!!!");
-  }
-})

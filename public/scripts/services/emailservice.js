@@ -2,12 +2,12 @@
 
 /**
  * @ngdoc service
- * @name bleaApp.emailService
+ * @name chaetherApp.emailService
  * @description
  * # emailService
- * Service in the bleaApp.
+ * Service in the chaetherApp.
  */
-angular.module('bleaApp')
+angular.module('chaetherApp')
   .service('emailService', ['$http', function ($http, $q) {
     var API_PATH = 'http://localhost:4000/',
     emailService = {};
