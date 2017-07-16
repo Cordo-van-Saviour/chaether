@@ -19,15 +19,10 @@ that we watch, so that all of the foundations
 for sending received data as an email is set.
 */
 
-if (typeof web3 !== 'undefined') {
-  web3 = new Web3(web3.currentProvider);
-} else {
-  // set the provider you want from Web3.providers
-  web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
-}
+web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
 
-var abi = web3.eth.contract([ { "constant": false, "inputs": [], "name": "withdraw", "outputs": [], "payable": false, "type": "function" }, { "constant": false, "inputs": [], "name": "kill", "outputs": [], "payable": false, "type": "function" }, { "constant": false, "inputs": [ { "name": "EmailAddress", "type": "string" }, { "name": "Subject", "type": "string" }, { "name": "Message", "type": "string" } ], "name": "SendEmail", "outputs": [ { "name": "", "type": "bool" } ], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "owner", "outputs": [ { "name": "", "type": "address", "value": "0x5404a9984a11b67e89ac29880161a2c896f0b59b" } ], "payable": false, "type": "function" }, { "anonymous": false, "inputs": [ { "indexed": false, "name": "Sender", "type": "address" }, { "indexed": false, "name": "EmailAddress", "type": "string" }, { "indexed": false, "name": "Subject", "type": "string" }, { "indexed": false, "name": "Message", "type": "string" } ], "name": "EmailSent", "type": "event" } ]),
-contractAddress = '0xBD2D1b143276173dBfC6f57d6cBbCE575eC54326',
+var abi = web3.eth.contract([{"constant":false,"inputs":[{"name":"sender","type":"address"},{"name":"recipient","type":"address"},{"name":"message","type":"string"}],"name":"send","outputs":[],"payable":false,"type":"function"},{"anonymous":false,"inputs":[{"indexed":true,"name":"sender","type":"address"},{"indexed":true,"name":"recipient","type":"address"},{"indexed":false,"name":"message","type":"string"}],"name":"Message","type":"event"}]),
+contractAddress = '0xccfa1cb5b4b8ca01a9bfea2a74efe7d60e00806b',
      myContract = abi.at(contractAddress);
          events = myContract.allEvents({fromBlock: 0, toBlock:'latest'});
 
@@ -36,6 +31,19 @@ console.log("Eth Node Version: ", web3.version.node);
 console.log("Network: " ,web3.version.network, web3.version.ethereum);
 console.log("Connected: ", web3.isConnected(), web3.currentProvider);
 console.log("syncing: ", web3.eth.syncing, ", Latest Block: ",web3.eth.blockNumber);
-console.log("Accounts[0]: " , web3.eth.accounts[0], ":",web3.eth.getBalance(web3.eth.accounts[0]).toNumber())
+console.log("Accounts[0]: " , web3.eth.accounts[0], ":",web3.eth.getBalance(web3.eth.accounts[0]).toNumber());
 console.log(new Date());
 console.log("listening for events on ", contractAddress);
+
+events.watch(function(error, event) {
+  if (error) throw error;
+  console.log(event.args.message);
+  console.log(web3.toAscii(event.args.message));
+});
+
+function send() {
+  var authorizedAccount = web3.eth.accounts[0],
+    to                = document.getElementsByName('to')[0].value,
+    message           = document.getElementsByName('message')[0].value;
+  contract.send(to, message, {from: authorizedAccount});
+}
