@@ -8,9 +8,7 @@
  * Controller of the chaetherApp
  */
 angular.module('chaetherApp')
-  .controller('MainCtrl', ['$rootScope', '$scope', '$q', 'emailService', function ($rootScope, $scope, $q, emailService) {
-
-    $scope.connected = true;
+  .controller('MainCtrl', ['$rootScope', '$scope', '$q', function ($rootScope, $scope, $q) {
 
     if (typeof web3 === 'undefined')
       web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
@@ -21,18 +19,16 @@ angular.module('chaetherApp')
       var events = Chaether.allEvents({fromBlock: 0, toBlock: 'latest'});
 
       $scope.messages = [];
-      $scope.eventData = [];
       // watch for changes
+
       events.watch(function (error, event) {
         console.log(error, event);
         if (!error) {
-          $scope.eventData.push(event.args);
-          console.log($scope.eventData);
+          $scope.messages.push(event.args);
           $scope.$apply();
         }
       });
 
-      $rootScope.emailFormat = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       $scope.sendMessage = function () {
 
         var authorizedAccount = web3.eth.accounts[0],
@@ -42,7 +38,7 @@ angular.module('chaetherApp')
 
         console.log(sendTo, subject, message);
 
-        Chaether.send(sendTo, subject, message, {from: authorizedAccount, gas: 100000}, function (address, err) {
+        Chaether.send(sendTo, subject, message, {from: authorizedAccount, gas: 100000}, function (err, address) {
           if (err) {
             console.log("Aaaaaaaaw snap! You dun goofed! error: " + err)
           } else {
