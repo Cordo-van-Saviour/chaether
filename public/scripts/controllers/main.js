@@ -16,25 +16,21 @@ angular.module('chaetherApp')
       web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
 
     if (typeof web3 !== 'undefined') {
-      var abi = web3.eth.contract([{"constant":false,"inputs":[{"name":"sender","type":"string"},{"name":"recipient","type":"string"},{"name":"message","type":"string"}],"name":"send","outputs":[],"payable":false,"type":"function"},{"anonymous":false,"inputs":[{"indexed":false,"name":"sender","type":"string"},{"indexed":true,"name":"recipient","type":"string"},{"indexed":false,"name":"message","type":"string"}],"name":"Message","type":"event"}]);
-      var Chaether = abi.at('0x4211edc197b3b522cb9a331c8bd20ec1b7386ab5');
+      var abi = web3.eth.contract([{"constant":false,"inputs":[{"name":"sender","type":"string"},{"name":"recipient","type":"string"},{"name":"message","type":"string"}],"name":"send","outputs":[],"payable":false,"type":"function"},{"anonymous":false,"inputs":[{"indexed":false,"name":"sender","type":"string"},{"indexed":false,"name":"recipient","type":"string"},{"indexed":false,"name":"message","type":"string"}],"name":"Message","type":"event"}]);
+      var Chaether = abi.at('0xF082F801e9Ff939E5af64147E8e71e92B82e203b');
       var events = Chaether.allEvents({fromBlock: 0, toBlock: 'latest'});
-
-      console.log(events);
 
       $scope.messages = [];
       $scope.eventData = [];
       // watch for changes
       events.watch(function (error, event) {
-        console.log(error, event)
+        console.log(error, event);
         if (!error) {
-          $scope.eventData.push(event);
-          event.args.message = web3.toAscii(event.args.message);
+          $scope.eventData.push(event.args);
           console.log($scope.eventData);
           $scope.$apply();
         }
       });
-
 
       $rootScope.emailFormat = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       $scope.sendMessage = function () {
