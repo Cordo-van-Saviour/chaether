@@ -1,3 +1,3 @@
-** Blea **
+**Chaether**
 
-World's best distributed email application 
+Decentralized chat application for the new age! :)
